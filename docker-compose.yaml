@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+
+  app:
+    image: app-stop-ec2:0.1.0
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src/python-files:/app
+      - ~/.aws/:/root/.aws:ro
+    command: /app/main.py
