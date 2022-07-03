@@ -3,8 +3,8 @@ import os
 import sys
 from datetime import datetime, timedelta
 
-def stop_start_ec2_instances(account,session,regions,environments,default_utc_stop_hour,default_utc_start_hour,print_only):
-    account_instanceid_list = []
+def get_ec2_instances(account,session,regions,environments,default_utc_stop_hour,default_utc_start_hour,print_only):
+    instance_list = []
     try:
         
         for region in regions:
@@ -22,10 +22,14 @@ def stop_start_ec2_instances(account,session,regions,environments,default_utc_st
                                         'Values': [
                                             environment
                                             ]
+                                    },
+                                    {
+                                        'Name': 'instance-state-name', 
+                                        'Values': [
+                                            'stopped', 
+                                            'running'
+                                            ]
                                     }
-                                ],
-                                InstanceStateName=[
-                                    "running ","stopped"
                                 ]
                     )["Reservations"]
                 
@@ -37,7 +41,8 @@ def stop_start_ec2_instances(account,session,regions,environments,default_utc_st
                 # print (type(instance))
                 instance_detail = instance["Instances"][0]
                 # print (instance_detail)
-                instance_id = (instance_detail["InstanceId"])
+                instance_id = instance_detail["InstanceId"]
+                instance_actual_state = instance_detail["State"]["Name"]
                 server_name = ""
                 instance_name = ""
                 
@@ -89,29 +94,16 @@ def stop_start_ec2_instances(account,session,regions,environments,default_utc_st
                 if date_now > date_skip_until and utc_stop_hour != utc_start_hour :
                 
                     if hour_now_str == utc_stop_hour:
-                        if print_only == "Y":
-                            instance_dict = {"action":"stop_print_only","account":account,"region":region,"instance_id":instance_id,"instance_name":instance_name,"server_name":server_name
-                                         ,"skip_until":skip_until,"utc_stop_hour":utc_stop_hour,"utc_start_hour":utc_start_hour,"auto_start":auto_start};
-                        else:
-                            instance_dict = {"action":"stop","account":account,"region":region,"instance_id":instance_id,"instance_name":instance_name,"server_name":server_name
-                                         ,"skip_until":skip_until,"utc_stop_hour":utc_stop_hour,"utc_start_hour":utc_start_hour,"auto_start":auto_start};
-                        
-                        account_instanceid_list.append(instance_dict)
+                        instance_dict = {"print_only":print_only,"action":"stop","account":account,"region":region,"instance_id":instance_id,"instance_actual_state":instance_actual_state,"instance_name":instance_name,"server_name":server_name
+                            ,"skip_until":skip_until,"utc_stop_hour":utc_stop_hour,"utc_start_hour":utc_start_hour,"auto_start":auto_start,"start_order":start_order,"stop_order":stop_order};
+                        instance_list.append(instance_dict)
                         
                     if hour_now_str == utc_start_hour and auto_start != "N" :
-                        if print_only == "Y":
-                            instance_dict = {"action":"start_print_only","account":account,"region":region,"instance_id":instance_id,"instance_name":instance_name,"server_name":server_name
-                                            ,"skip_until":skip_until,"utc_stop_hour":utc_stop_hour,"utc_start_hour":utc_start_hour,"auto_start":auto_start};
-                        else:
-                            instance_dict = {"action":"start","account":account,"region":region,"instance_id":instance_id,"instance_name":instance_name,"server_name":server_name
-                                            ,"skip_until":skip_until,"utc_stop_hour":utc_stop_hour,"utc_start_hour":utc_start_hour,"auto_start":auto_start};
-                            
-                        account_instanceid_list.append(instance_dict)
-
-                            
+                        instance_dict = {"print_only":print_only,"action":"start","account":account,"region":region,"instance_id":instance_id,"instance_actual_state":instance_actual_state,"instance_name":instance_name,"server_name":server_name
+                            ,"skip_until":skip_until,"utc_stop_hour":utc_stop_hour,"utc_start_hour":utc_start_hour,"auto_start":auto_start,"start_order":start_order,"stop_order":stop_order};
+                        instance_list.append(instance_dict)
+                        
                 # print(account," >>> ",region," >>> ",instance_id," >>> ",instance_name," >>> ",server_name)
-                
-       
                 
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -119,5 +111,5 @@ def stop_start_ec2_instances(account,session,regions,environments,default_utc_st
         print(exc_type, fname, exc_tb.tb_lineno)
         print(f"---Ocorreu a seguinte exceção: {e}")
     finally:
-        return account_instanceid_list
+        return instance_list
 
