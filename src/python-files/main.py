@@ -14,7 +14,7 @@ if __name__ == '__main__':
     #######################################################################################
     
     
-    print_only,accounts,accounts_apply_all,assume_role_name,regions,sleep_sec_next_order,default_utc_stop_hour,default_utc_start_hour,environments = get_parameters()
+    print_only,accounts,accounts_apply_all,assume_role_name,regions,sleep_sec_next_order,default_utc_stop_hour,default_utc_start_hour,environments,dynamodb_table = get_parameters()
     
     # print_only = "N"
     # accounts = ["770409265803","583166431114"]
@@ -48,6 +48,8 @@ if __name__ == '__main__':
         session = assume_role_session(account,assume_role_name)
         instance_list_action_result += stop_start_ec2_instances(account,session,regions,instance_list,sleep_sec_next_order)
     
+    
+    dynamodb_put_item(dynamodb_table)
     
     print("*"*150)
     for action_result in instance_list_action_result:

@@ -4,6 +4,7 @@ import sys
 import time
 from datetime import datetime, timedelta
 from operator import itemgetter
+from uuid import uuid4
 
 def stop_start_ec2_instances(account,session,regions,instance_list,sleep_sec_next_order):
     
@@ -43,7 +44,8 @@ def stop_start_ec2_instances(account,session,regions,instance_list,sleep_sec_nex
                             action_exception = ""
                         finally:
                             # print("Instance",instance["instance_id"],"stopped!")
-                            instance_dict = {"account":account,"region":region,"instance_id":instance["instance_id"]
+                            instance_dict = {"unique_id":str(uuid4()),"type":"stop_start_instances"
+                                            ,"account":account,"region":region,"instance_id":instance["instance_id"]
                                             ,"instance_name":instance["instance_name"],"server_name":instance["server_name"]
                                             ,"utc_date_time":date_now,"action":instance["action"],"action_state":action_state,"action_exception":action_exception}
                             instance_list_action_result.append(instance_dict)
@@ -71,7 +73,8 @@ def stop_start_ec2_instances(account,session,regions,instance_list,sleep_sec_nex
                             action_exception = ""
                         finally:
                             # print("Instance",instance["instance_id"],"started!")
-                            instance_dict = {"account":account,"region":region,"instance_id":instance["instance_id"]
+                            instance_dict = {"unique_id":str(uuid4()),"type":"stop_start_instances"
+                                            ,"account":account,"region":region,"instance_id":instance["instance_id"]
                                             ,"instance_name":instance["instance_name"],"server_name":instance["server_name"]
                                             ,"utc_date_time":date_now,"action":instance["action"],"action_state":action_state,"action_exception":action_exception}
                             instance_list_action_result.append(instance_dict)
