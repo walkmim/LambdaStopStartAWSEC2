@@ -12,9 +12,9 @@ if __name__ == '__main__':
     #main()
     #######################################################################################
     #######################################################################################
+    parameter_store_name = "AUTOMATION-STOP-START-EC2"
     
-    
-    print_only,accounts,accounts_apply_all,assume_role_name,regions,sleep_sec_next_order,default_utc_stop_hour,default_utc_start_hour,environments,dynamodb_table = get_parameters()
+    print_only,accounts,accounts_apply_all,assume_role_name,regions,sleep_sec_next_order,default_utc_stop_hour,default_utc_start_hour,environments,dynamodb_table = get_parameters(parameter_store_name)
     
     # print_only = "N"
     # accounts = ["770409265803","583166431114"]

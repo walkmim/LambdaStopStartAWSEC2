@@ -43,7 +43,7 @@ def get_ec2_instances(account,session,regions,environments,default_utc_stop_hour
                 instance_detail = instance["Instances"][0]
                 # print (instance_detail)
                 instance_id = instance_detail["InstanceId"]
-                instance_actual_state = instance_detail["State"]["Name"]
+                instance_current_state = instance_detail["State"]["Name"]
                 server_name = ""
                 instance_name = ""
                 
@@ -96,14 +96,14 @@ def get_ec2_instances(account,session,regions,environments,default_utc_stop_hour
                 
                     if hour_now_str == utc_stop_hour:
                         instance_dict = {"unique_id":str(uuid4()),"type":"list_valid_instances","print_only":print_only,"action":"stop","account":account,"region":region
-                            ,"instance_id":instance_id,"instance_actual_state":instance_actual_state,"instance_name":instance_name,"server_name":server_name
+                            ,"instance_id":instance_id,"instance_current_state":instance_current_state,"instance_name":instance_name,"server_name":server_name
                             ,"skip_until":skip_until,"utc_stop_hour":utc_stop_hour,"utc_start_hour":utc_start_hour,"auto_start":auto_start
                             ,"start_order":start_order,"stop_order":stop_order,"utc_date_time":date_now};
                         instance_list.append(instance_dict)
                         
                     if hour_now_str == utc_start_hour and auto_start != "N" :
                         instance_dict = {"unique_id":str(uuid4()),"type":"list_valid_instances","print_only":print_only,"action":"start","account":account,"region":region
-                            ,"instance_id":instance_id,"instance_actual_state":instance_actual_state,"instance_name":instance_name,"server_name":server_name
+                            ,"instance_id":instance_id,"instance_current_state":instance_current_state,"instance_name":instance_name,"server_name":server_name
                             ,"skip_until":skip_until,"utc_stop_hour":utc_stop_hour,"utc_start_hour":utc_start_hour,"auto_start":auto_start
                             ,"start_order":start_order,"stop_order":stop_order,"utc_date_time":date_now};
                         instance_list.append(instance_dict)

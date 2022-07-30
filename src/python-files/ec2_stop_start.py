@@ -22,7 +22,7 @@ def stop_start_ec2_instances(account,session,regions,instance_list,sleep_sec_nex
             # 
             for instance in instance_list_stop_order:
                 # print(instance)
-                if instance["action"] == "stop" and instance["instance_actual_state"] == "running" and instance["print_only"] == "N":
+                if instance["action"] == "stop" and instance["instance_current_state"] == "running" and instance["print_only"] == "N":
                     if last_stopped_order < int(instance["stop_order"]):
                         time.sleep(sleep_sec_next_order)
                         last_stopped_order = int(instance["stop_order"])
@@ -52,7 +52,7 @@ def stop_start_ec2_instances(account,session,regions,instance_list,sleep_sec_nex
                     
                     
             for instance in instance_list_start_order:
-                if instance["action"] == "start" and instance["instance_actual_state"] == "stopped" and instance["print_only"] == "N":
+                if instance["action"] == "start" and instance["instance_current_state"] == "stopped" and instance["print_only"] == "N":
                     
                     if last_start_order < int(instance["start_order"]):
                         time.sleep(sleep_sec_next_order)
