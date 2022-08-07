@@ -11,12 +11,6 @@
                 "ec2:StopInstances"
             ],
             "Resource": "*"
-        },
-        {
-            "Sid": "RestrictAssumePermission",
-            "Effect": "Allow",
-            "Action": "sts:AssumeRole",
-            "Resource": "arn:aws:iam::770409265803:role/role_lambda_stop_start_instance"
         }
     ]
 }

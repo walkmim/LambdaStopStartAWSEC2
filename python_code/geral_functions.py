@@ -51,7 +51,8 @@ def get_parameters (parameter_store_name):
     # print("default_utc_start_hour",default_utc_start_hour)
     # print("environments",environments)
     
-    return print_only,accounts,accounts_apply_all,assume_role_name,regions,sleep_sec_next_order,default_utc_stop_hour,default_utc_start_hour,environments,dynamodb_table,log_cw_logs
+    return print_only,accounts,accounts_apply_all,assume_role_name,regions,sleep_sec_next_order \
+        ,default_utc_stop_hour,default_utc_start_hour,environments,dynamodb_table,log_actions_cw_logs
 
 def dynamodb_put_item(dynamodb_table,instance_list):
     dynamodb = boto3.resource('dynamodb')
