@@ -34,6 +34,7 @@ aws ecr create-repository \
     --image-scanning-configuration scanOnPush=true
 
 Realizar push da imagem (Executar no diretório "python_code"):
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 770409265803.dkr.ecr.us-east-1.amazonaws.com
 docker build -t app-stop-start-ec2 .
 docker tag app-stop-start-ec2:latest 770409265803.dkr.ecr.us-east-1.amazonaws.com/app-stop-start-ec2:latest
 docker push 770409265803.dkr.ecr.us-east-1.amazonaws.com/app-stop-start-ec2:latest

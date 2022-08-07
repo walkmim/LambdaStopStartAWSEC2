@@ -38,7 +38,7 @@ def handler(event, context):
 
         
         instance_list = []
-        instance_list_action_result = []
+        instance_list_action_result_all = []
         
         # Selecting instances to apply appropriate action
         for account in accounts:
@@ -54,16 +54,16 @@ def handler(event, context):
         # Applying appropriate action
         for account in accounts:
             session = assume_role_session(account,assume_role_name)
-            instance_list_action_result += stop_start_ec2_instances(account,session,regions,instance_list,sleep_sec_next_order)
+            instance_list_action_result_all += stop_start_ec2_instances(account,session,regions,instance_list,sleep_sec_next_order)
         
         # Logging in CloudWatch
         if log_actions_cw_logs == "Y":
             print("*"*15)
-            print(instance_list_action_result)
+            print(instance_list_action_result_all)
             print("*"*15)
         
         # Logging actions in DynamoDB
-        dynamodb_put_item(dynamodb_table,instance_list_action_result)
+        dynamodb_put_item(dynamodb_table,instance_list_action_result_all)
         
 
         
