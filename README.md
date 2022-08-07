@@ -85,7 +85,7 @@ Lambda Function Stop Start AW EC2- Python BOTO3
         Caso definido valor "*" para esta variável, será DESconiderado tag de ambiente do recurso.
 
 
-## Tags usadas nas Instâncias EC2 a qual são consideradas no processo de desligar/ligar EC2s:
+## Tags usadas nas Instâncias EC2 que são consideradas no processo de desligar/ligar EC2s:
 
 
 * **server_name**
