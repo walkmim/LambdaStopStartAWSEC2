@@ -37,6 +37,16 @@
                 "arn:aws:logs:*:770409265803:log-group:/aws/lambda/lambda_stop_start_instance",
                 "arn:aws:logs:*:770409265803:log-group:/aws/lambda/lambda_stop_start_instance:log-stream:*"
             ]
+        },
+        {
+            "Sid": "STSPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "sts:AssumeRole"
+            ],
+            "Resource": [
+                "arn:aws:iam::*:role/role_stop_start_instances"
+            ]
         }
     ]
 }
