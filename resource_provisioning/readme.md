@@ -38,10 +38,31 @@ docker build -t app-stop-start-ec2 .
 docker tag app-stop-start-ec2:latest 770409265803.dkr.ecr.us-east-1.amazonaws.com/app-stop-start-ec2:latest
 docker push 770409265803.dkr.ecr.us-east-1.amazonaws.com/app-stop-start-ec2:latest
 
-Lambda Function (Executar no diretorio .../Resource Provisioning após o ECR ser provisionado por completo):
+Lambda Function (Executar no diretorio .../resource_provisioning após o ECR ser provisionado por completo):
 aws lambda create-function --cli-input-json file://lambda_function.json
 
 ******************************************************************************
+
+
+
+************************************************************************************************************************************************************
+************************************************************************************************************************************************************
+
+Recursos a serem provisionados na conta cliente a qual os recursos serão desligados/ligados:
+
+IAM Policy:
+aws iam create-policy --policy-name policy_stop_start_instances --policy-document file://policy_stop_start_instances.json
+
+IAM Role:
+aws iam create-role --role-name role_stop_start_instances --assume-role-policy-document file://trust_relationship_account.json
+
+Atachar Policy à role:
+aws iam attach-role-policy --policy-arn arn:aws:iam::583166431114:policy/policy_stop_start_instances --role-name role_stop_start_instances
+
+
+************************************************************************************************************************************************************
+************************************************************************************************************************************************************
+Deleção dos recursos provisionados:
 
 Deletar recursos provisionados via AWS CLI v2 na conta executora:
 
@@ -73,20 +94,8 @@ aws iam delete-policy --policy-arn arn:aws:iam::770409265803:policy/policy_lambd
 
 * Deletar log group da lambda através da Console AWS na Sessão CloudWatch/Logs/Log groups
 
-******************************************************************************
 
-Recursos a serem provisionados na conta cliente a qual os recursos serão desligados/ligados:
-
-IAM Policy:
-aws iam create-policy --policy-name policy_stop_start_instances --policy-document file://policy_stop_start_instances.json
-
-IAM Role:
-aws iam create-role --role-name role_stop_start_instances --assume-role-policy-document file://trust_relationship_account.json
-
-Atachar Policy à role:
-aws iam attach-role-policy --policy-arn arn:aws:iam::770409265803:policy/policy_stop_start_instances --role-name role_stop_start_instances
-
-******************************************************************************
+************************************************************************************************************************************************************
 
 Deletar recursos provisionados via AWS CLI v2 na conta cliente a qual os recursos serão desligados/ligados:
 
