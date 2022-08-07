@@ -49,7 +49,7 @@ def handler(event, context):
                 instance_list += get_ec2_instances(account,session,regions,environments,default_utc_stop_hour,default_utc_start_hour,print_only)
         
         # Logging in DynamoDB - Instancias do escopo
-        dynamodb_put_item(dynamodb_table,instance_list)
+        # dynamodb_put_item(dynamodb_table,instance_list)
                     
         # Applying appropriate action
         for account in accounts:
@@ -58,8 +58,6 @@ def handler(event, context):
         
         # Logging in CloudWatch
         if log_actions_cw_logs == "Y":
-            print("*"*15)
-            print(instance_list)
             print("*"*15)
             print(instance_list_action_result)
             print("*"*15)
