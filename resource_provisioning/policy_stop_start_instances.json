@@ -1,0 +1,22 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Ec2Permission",
+            "Effect": "Allow",
+            "Action": [
+                "ec2:DescribeInstances",
+                "ec2:StartInstances",
+                "ec2:DescribeTags",
+                "ec2:StopInstances"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Sid": "RestrictAssumePermission",
+            "Effect": "Allow",
+            "Action": "sts:AssumeRole",
+            "Resource": "arn:aws:iam::770409265803:role/role_lambda_stop_start_instance"
+        }
+    ]
+}

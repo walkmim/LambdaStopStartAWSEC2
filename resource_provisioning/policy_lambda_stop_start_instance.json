@@ -1,0 +1,42 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "DynamoDBPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "dynamodb:PutItem",
+                "dynamodb:DescribeTable"
+            ],
+            "Resource": [
+                "arn:aws:dynamodb:*:770409265803:table/tb_stop_start_instances"
+            ]
+        },
+        {
+            "Sid": "SSMPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "ssm:GetParameters",
+                "ssm:GetParameter"
+            ],
+            "Resource": [
+                "arn:aws:ssm:*:770409265803:parameter/AUTOMATION-STOP-START-EC2"
+            ]
+        },
+        {
+            "Sid": "CloudWatchPermissions",
+            "Effect": "Allow",
+            "Action": [
+                "logs:CreateLogStream",
+                "logs:DeleteLogGroup",
+                "logs:CreateLogGroup",
+                "logs:DeleteLogStream",
+                "logs:PutLogEvents"
+            ],
+            "Resource": [
+                "arn:aws:logs:*:770409265803:log-group:/aws/lambda/lambda_stop_start_instance",
+                "arn:aws:logs:*:770409265803:log-group:/aws/lambda/lambda_stop_start_instance:log-stream:*"
+            ]
+        }
+    ]
+}

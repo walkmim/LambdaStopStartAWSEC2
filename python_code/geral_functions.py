@@ -51,33 +51,29 @@ def get_parameters (parameter_store_name):
     # print("default_utc_start_hour",default_utc_start_hour)
     # print("environments",environments)
     
-    return print_only,accounts,accounts_apply_all,assume_role_name,regions,sleep_sec_next_order,default_utc_stop_hour,default_utc_start_hour,environments,dynamodb_table
+    return print_only,accounts,accounts_apply_all,assume_role_name,regions,sleep_sec_next_order,default_utc_stop_hour,default_utc_start_hour,environments,dynamodb_table,log_cw_logs
 
 def dynamodb_put_item(dynamodb_table,instance_list):
     dynamodb = boto3.resource('dynamodb')
-
     table = dynamodb.Table(dynamodb_table)
 
-    instance_list = [{'unique_id': '433921a4-d501-479b-a674-216919f7a3e1', 'utc_date_time': '07/03/2022 05:51:14', 'action': 'stop'}
-                    ,{'unique_id': 'c7d459d6-9f65-4c11-ad3b-0d8347140aca', 'utc_date_time': '07/03/2022 05:51:14', 'action': 'stop'}]
-    
-
-
-    item = json.loads(json.dumps(instance_list), parse_float=Decimal)
     
     for instance in instance_list:
-        item = json.loads(json.dumps(instance), parse_float=Decimal)
-
-        print(instance["unique_id"], instance["utc_date_time"])
         
-        # response = table.put_item(
-        #         Item={
-        #             'unique_id' : instance["unique_id"],
-        #             "type" : instance["type"],
-        #             "utc_date_time" : instance["utc_date_time"],
-        #             "action_state" : instance["action_state"]
-        #         }
-        #     )
+        # print (instance)
+        
+        try:
+            action_state = instance["action_state"]
+        except: 
+            action_state = ""
+            pass
+            
+        try:
+            action_exception = instance["action_exception"]
+        except: 
+            action_exception = ""
+            pass
+            
         
         response = table.put_item(
                 Item={
@@ -88,7 +84,7 @@ def dynamodb_put_item(dynamodb_table,instance_list):
                     ,"account" : instance["account"]
                     ,"region" : instance["region"]
                     ,"instance_id" : instance["instance_id"]
-                    ,"instance_actual_state" : instance["instance_actual_state"]
+                    ,"instance_current_state" : instance["instance_current_state"]
                     ,"instance_name" : instance["instance_name"]
                     ,"server_name" : instance["server_name"]
                     ,"skip_until" : instance["skip_until"]
@@ -97,7 +93,8 @@ def dynamodb_put_item(dynamodb_table,instance_list):
                     ,"start_order" : instance["start_order"]
                     ,"stop_order" : instance["stop_order"]
                     ,"utc_date_time" : instance["utc_date_time"]
-                    ,"action_state" : instance["action_state"]
-                    ,"action_exception" : instance["action_exception"]
+                    ,"utc_timestamp" : instance["utc_timestamp"]
+                    ,"action_state" : action_state
+                    ,"action_exception" : action_exception
                 }
         )

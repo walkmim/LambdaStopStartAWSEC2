@@ -3,6 +3,7 @@ import os
 import sys
 from datetime import datetime, timedelta
 from uuid import uuid4
+from decimal import Decimal
 
 def get_ec2_instances(account,session,regions,environments,default_utc_stop_hour,default_utc_start_hour,print_only):
     instance_list = []
@@ -13,7 +14,17 @@ def get_ec2_instances(account,session,regions,environments,default_utc_stop_hour
             ec2_instances = []
             # to get instances filtering by environment tag
             if environments == "*":
-                ec2_instances += ec2_client.describe_instances()["Reservations"]
+                ec2_instances += ec2_client.describe_instances(
+                        Filters=[
+                                    {
+                                        'Name': 'instance-state-name', 
+                                        'Values': [
+                                            'stopped', 
+                                            'running'
+                                            ]
+                                    }
+                                ]
+                    )["Reservations"]
             else:
                 for environment in environments:
                     ec2_instances += ec2_client.describe_instances(
@@ -86,6 +97,8 @@ def get_ec2_instances(account,session,regions,environments,default_utc_stop_hour
                 
                 
                 date_now = datetime.utcnow().date()
+                date_time_now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+                utc_timestamp = datetime.timestamp(datetime.utcnow())
                 date_skip_until = datetime.strptime(skip_until, '%d/%m/%Y').date()
                 hour_now_str = datetime.utcnow().strftime("%H")
                 
@@ -95,17 +108,17 @@ def get_ec2_instances(account,session,regions,environments,default_utc_stop_hour
                 if date_now > date_skip_until and utc_stop_hour != utc_start_hour :
                 
                     if hour_now_str == utc_stop_hour:
-                        instance_dict = {"unique_id":str(uuid4()),"type":"list_valid_instances","print_only":print_only,"action":"stop","account":account,"region":region
+                        instance_dict = {"unique_id":str(uuid4()),"type":"valid_instance_list","print_only":print_only,"action":"stop","account":account,"region":region
                             ,"instance_id":instance_id,"instance_current_state":instance_current_state,"instance_name":instance_name,"server_name":server_name
                             ,"skip_until":skip_until,"utc_stop_hour":utc_stop_hour,"utc_start_hour":utc_start_hour,"auto_start":auto_start
-                            ,"start_order":start_order,"stop_order":stop_order,"utc_date_time":date_now};
+                            ,"start_order":start_order,"stop_order":stop_order,"utc_date_time":str(date_time_now),"utc_timestamp":Decimal(utc_timestamp)};
                         instance_list.append(instance_dict)
                         
                     if hour_now_str == utc_start_hour and auto_start != "N" :
-                        instance_dict = {"unique_id":str(uuid4()),"type":"list_valid_instances","print_only":print_only,"action":"start","account":account,"region":region
+                        instance_dict = {"unique_id":str(uuid4()),"type":"valid_instance_list","print_only":print_only,"action":"start","account":account,"region":region
                             ,"instance_id":instance_id,"instance_current_state":instance_current_state,"instance_name":instance_name,"server_name":server_name
                             ,"skip_until":skip_until,"utc_stop_hour":utc_stop_hour,"utc_start_hour":utc_start_hour,"auto_start":auto_start
-                            ,"start_order":start_order,"stop_order":stop_order,"utc_date_time":date_now};
+                            ,"start_order":start_order,"stop_order":stop_order,"utc_date_time":str(date_time_now),"utc_timestamp":Decimal(utc_timestamp)};
                         instance_list.append(instance_dict)
                         
                 # print(account," >>> ",region," >>> ",instance_id," >>> ",instance_name," >>> ",server_name)

@@ -5,6 +5,7 @@ import time
 from datetime import datetime, timedelta
 from operator import itemgetter
 from uuid import uuid4
+from decimal import Decimal
 
 def stop_start_ec2_instances(account,session,regions,instance_list,sleep_sec_next_order):
     
@@ -29,25 +30,27 @@ def stop_start_ec2_instances(account,session,regions,instance_list,sleep_sec_nex
                         
                     if instance["account"] == account and instance["region"] == region:
                         
-                        date_now = datetime.utcnow().strftime("%m/%d/%Y %H:%M:%S")
+                        date_time_now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+                        utc_timestamp = datetime.timestamp(datetime.utcnow())
+                        
                         try:
                             ec2_client.stop_instances(
                                 InstanceIds=[
                                     instance["instance_id"],
                                 ],
                             )
+                            action_state = "Success"
+                            action_exception = ""
                         except Exception as e:
                             action_exception = e
                             print("Exception:",e)
-                        else:
-                            action_state = "Success"
-                            action_exception = ""
                         finally:
                             # print("Instance",instance["instance_id"],"stopped!")
                             instance_dict = {"unique_id":str(uuid4()),"type":"stop_start_instances"
                                             ,"account":account,"region":region,"instance_id":instance["instance_id"]
                                             ,"instance_name":instance["instance_name"],"server_name":instance["server_name"]
-                                            ,"utc_date_time":date_now,"action":instance["action"],"action_state":action_state,"action_exception":action_exception}
+                                            ,"utc_date_time":str(date_time_now),"utc_timestamp":Decimal(utc_timestamp)
+                                            ,"action":instance["action"],"action_state":action_state,"action_exception":action_exception}
                             instance_list_action_result.append(instance_dict)
                     
                     
@@ -59,24 +62,28 @@ def stop_start_ec2_instances(account,session,regions,instance_list,sleep_sec_nex
                         last_start_order = int(instance["start_order"])
                     
                     if instance["account"] == account and instance["region"] == region:
+                        
+                        date_time_now = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+                        utc_timestamp = datetime.timestamp(datetime.utcnow())
+                    
                         try:
                             ec2_client.start_instances(
                                 InstanceIds=[
                                     instance["instance_id"],
                                 ],
                             )
+                            action_state = "Success"
+                            action_exception = ""
                         except Exception as e:
                             action_state = "Fail"
                             action_exception = e
-                        else:
-                            action_state = "Success"
-                            action_exception = ""
                         finally:
                             # print("Instance",instance["instance_id"],"started!")
                             instance_dict = {"unique_id":str(uuid4()),"type":"stop_start_instances"
                                             ,"account":account,"region":region,"instance_id":instance["instance_id"]
                                             ,"instance_name":instance["instance_name"],"server_name":instance["server_name"]
-                                            ,"utc_date_time":date_now,"action":instance["action"],"action_state":action_state,"action_exception":action_exception}
+                                            ,"utc_date_time":str(date_time_now),"utc_timestamp":Decimal(utc_timestamp)
+                                            ,"action":instance["action"],"action_state":action_state,"action_exception":action_exception}
                             instance_list_action_result.append(instance_dict)
                               
                 
