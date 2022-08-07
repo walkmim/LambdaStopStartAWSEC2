@@ -7,4 +7,9 @@ aws ec2 run-instances --image-id ami-090fa75af13c156b4 --count 1 --instance-type
 ##start
 aws ec2 run-instances --image-id ami-090fa75af13c156b4 --count 1 --instance-type t2.micro --key-name kp-wallydata --security-group-ids sg-8a37b182 --subnet-id subnet-4a179c2c --region us-east-1 --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=start},{Key=environment,Value=DEV},{Key=utc_start_hour,Value=19}]'
 
+##tag PRD
+aws ec2 run-instances --image-id ami-090fa75af13c156b4 --count 1 --instance-type t2.micro --key-name kp-wallydata --security-group-ids sg-8a37b182 --subnet-id subnet-4a179c2c --region us-east-1 --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=PRD},{Key=environment,Value=PRD},{Key=utc_stop_hour,Value=19}]'
+
+##sem tag env
+aws ec2 run-instances --image-id ami-090fa75af13c156b4 --count 1 --instance-type t2.micro --key-name kp-wallydata --security-group-ids sg-8a37b182 --subnet-id subnet-4a179c2c --region us-east-1 --tag-specifications 'ResourceType=instance,Tags=[{Key=Name,Value=sem tag env},{Key=utc_stop_hour,Value=20}]'
 
