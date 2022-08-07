@@ -47,6 +47,9 @@ def handler(event, context):
                 instance_list += get_ec2_instances(account,session,regions,"*",default_utc_stop_hour,default_utc_start_hour,print_only)
             else:
                 instance_list += get_ec2_instances(account,session,regions,environments,default_utc_stop_hour,default_utc_start_hour,print_only)
+        
+        # Logging in DynamoDB - Instancias do escopo
+        dynamodb_put_item(dynamodb_table,instance_list)
                     
         # Applying appropriate action
         for account in accounts:
@@ -61,8 +64,8 @@ def handler(event, context):
             print(instance_list_action_result)
             print("*"*15)
         
-        # Logging in DynamoDB
-        dynamodb_put_item(dynamodb_table,instance_list+instance_list_action_result)
+        # Logging actions in DynamoDB
+        dynamodb_put_item(dynamodb_table,instance_list_action_result)
         
 
         

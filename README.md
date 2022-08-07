@@ -97,6 +97,17 @@
     * Objetivo: Definir quais ambientes serão considerados na execução da Lambda function (será comparado com a tag "environment" do recurso). 
         Caso definido valor "*" para esta variável, será DESconiderado tag de ambiente do recurso.
 
+* **dynamodb_table**
+    * Valores aceitáveis: String com nome da tabela dynamoDB
+    * Multi valor: Não
+    * Objetivo: Tabela DynamoDB a qual serão salvos ações da lambda
+
+
+* **log_actions_cw_logs**
+    * Valores aceitáveis: "Y" | "N"
+    * Multi valor: Não
+    * Objetivo: Define se serão salvos ações da lambda em log stream do Cloud Watch Logs.
+
 
 ## Tags usadas nas Instâncias EC2 que são consideradas no processo de desligar/ligar EC2s:
 
