@@ -3,6 +3,17 @@
 
 ![alt text](./Arquitetura.drawio.png)
 
+#### Ferramentas e Linguagens de programação utilizadas: 
+* Windows 11
+* Docker
+* VS Code
+* Github
+* Python
+* AWS CLI
+* Shell
+* Cloudshell
+* Bash para Windows
+
 ## Funções e observações:
 
 * Desligamento por ambiente:
