@@ -1,5 +1,7 @@
 # Lambda Stop/Start AWS EC2 Instances
-Lambda Function Stop Start AW EC2- Python BOTO3
+#### Lambda Function Stop Start AW EC2- Python BOTO3
+
+![alt text](./Arquitetura.drawio.png)
 
 ## Funções e observações:
 
