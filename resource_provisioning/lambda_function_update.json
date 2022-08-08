@@ -1,0 +1,15 @@
+{
+    "FunctionName": "lambda_stop_start_instance",
+    "Role": "arn:aws:iam::770409265803:role/role_lambda_stop_start_instance",
+    "Code": {
+        "ImageUri": "770409265803.dkr.ecr.us-east-1.amazonaws.com/app-stop-start-ec2:latest"
+    },
+    "Description": "Lambda Function Stop Start EC2 Intances com Assume Role",
+    "Timeout": 600,
+    "MemorySize": 256,
+    "Publish": false,
+    "PackageType": "Image",
+    "Architectures": [
+        "x86_64"
+    ]
+}

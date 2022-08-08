@@ -8,15 +8,15 @@ from uuid import uuid4
 from decimal import Decimal
 from inspect import currentframe, getframeinfo
 
-def stop_start_ec2_instances(account,session,regions,instance_list,sleep_sec_next_order,debug):
+def stop_start_ec2_instances(account,session,regions,instance_list_all,sleep_sec_next_order,debug):
     
     try:
         instance_list_action_result = []
         for region in regions:
             ec2_client = session.client('ec2', region_name=region)
             
-            instance_list_stop_order = sorted(instance_list, key=itemgetter('stop_order')) 
-            instance_list_start_order = sorted(instance_list, key=itemgetter('start_order')) 
+            instance_list_stop_order = sorted(instance_list_all, key=itemgetter('stop_order')) 
+            instance_list_start_order = sorted(instance_list_all, key=itemgetter('start_order')) 
             
             last_stopped_order = 0
             last_start_order = 0
@@ -87,7 +87,7 @@ def stop_start_ec2_instances(account,session,regions,instance_list,sleep_sec_nex
                                             ,"action":instance["action"],"action_state":action_state,"action_exception":action_exception}
                             instance_list_action_result.append(instance_dict)
                             if debug == "Y":
-                                print("line = "+str(currentframe().f_back.f_lineno))
+                                print('ec2_stop_start',"line = 90 > "+str(currentframe().f_back.f_lineno))
                                 print (instance_dict)
                               
                 
@@ -98,7 +98,7 @@ def stop_start_ec2_instances(account,session,regions,instance_list,sleep_sec_nex
         print(f"---Ocorreu a seguinte exceção: {e}")
     finally:
         if debug == "Y":
-            print("line = "+str(currentframe().f_back.f_lineno))
+            print('ec2_stop_start',"line = "+str(currentframe().f_back.f_lineno))
             print (instance_list_action_result)
         return instance_list_action_result
 

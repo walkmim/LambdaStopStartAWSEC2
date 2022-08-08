@@ -124,7 +124,7 @@ def get_ec2_instances(account,session,regions,environments,default_utc_stop_hour
                         instance_list.append(instance_dict)
                 
                 if debug == "Y":
-                    print("line = "+str(currentframe().f_back.f_lineno))
+                    print('ec2_get',"line = "+str(currentframe().f_back.f_lineno))
                     print(account," >>> ",region," >>> ",instance_id," >>> ",instance_name," >>> ",server_name)
                 
     except Exception as e:
@@ -134,7 +134,7 @@ def get_ec2_instances(account,session,regions,environments,default_utc_stop_hour
         print(f"---Ocorreu a seguinte exceção: {e}")
     finally:
         if debug == "Y":
-            print("line = "+str(currentframe().f_back.f_lineno))
+            print('ec2_get',"line = "+str(currentframe().f_back.f_lineno))
             print (instance_list)
         return instance_list
 

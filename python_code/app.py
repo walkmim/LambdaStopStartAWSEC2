@@ -46,12 +46,12 @@ def handler(event, context):
         for account in accounts:
             session = assume_role_session(account,assume_role_name)
             if accounts_apply_all.count(account) > 0:
-                instance_list_all.append(get_ec2_instances(account,session,regions,"*",default_utc_stop_hour,default_utc_start_hour,print_only,debug))
+                instance_list_all+=get_ec2_instances(account,session,regions,"*",default_utc_stop_hour,default_utc_start_hour,print_only,debug)
             else:
-                instance_list_all.append(get_ec2_instances(account,session,regions,environments,default_utc_stop_hour,default_utc_start_hour,print_only,debug))
+                instance_list_all+=get_ec2_instances(account,session,regions,environments,default_utc_stop_hour,default_utc_start_hour,print_only,debug)
         
         if debug == "Y":
-            print("line = "+str(currentframe().f_back.f_lineno))
+            print('app.py',"line = "+str(currentframe().f_back.f_lineno))
             print (instance_list_all)
         
         # Logging in DynamoDB - Instancias do escopo
@@ -60,15 +60,17 @@ def handler(event, context):
         # Applying appropriate action
         for account in accounts:
             session = assume_role_session(account,assume_role_name)
-            instance_list_action_result_all.append(stop_start_ec2_instances(account,session,regions,instance_list_all,sleep_sec_next_order,debug))
+            instance_list_action_result_all+=stop_start_ec2_instances(account,session,regions,instance_list_all,sleep_sec_next_order,debug)
         
         if debug == "Y":
-            print("line = "+str(currentframe().f_back.f_lineno))
+            print('app.py',"line = "+str(currentframe().f_back.f_lineno))
             print (instance_list_action_result_all)
             
         # Logging in CloudWatch
         if log_actions_cw_logs == "Y":
-            print("*"*15)
+            print(">"*15,' List ',"<"*15)
+            print(instance_list_all)
+            print(">"*15,' Action ',"<"*15)
             print(instance_list_action_result_all)
             print("*"*15)
         
