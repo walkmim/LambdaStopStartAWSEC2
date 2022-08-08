@@ -6,8 +6,9 @@ from datetime import datetime, timedelta
 from operator import itemgetter
 from uuid import uuid4
 from decimal import Decimal
+from inspect import currentframe, getframeinfo
 
-def stop_start_ec2_instances(account,session,regions,instance_list,sleep_sec_next_order):
+def stop_start_ec2_instances(account,session,regions,instance_list,sleep_sec_next_order,debug):
     
     try:
         instance_list_action_result = []
@@ -85,6 +86,9 @@ def stop_start_ec2_instances(account,session,regions,instance_list,sleep_sec_nex
                                             ,"utc_date_time":str(date_time_now),"utc_timestamp":Decimal(utc_timestamp)
                                             ,"action":instance["action"],"action_state":action_state,"action_exception":action_exception}
                             instance_list_action_result.append(instance_dict)
+                            if debug == "Y":
+                                print("line = "+str(currentframe().f_back.f_lineno))
+                                print (instance_dict)
                               
                 
     except Exception as e:
@@ -93,6 +97,8 @@ def stop_start_ec2_instances(account,session,regions,instance_list,sleep_sec_nex
         print(exc_type, fname, exc_tb.tb_lineno)
         print(f"---Ocorreu a seguinte exceção: {e}")
     finally:
-        # print("Final:", instance_list_action_result)
+        if debug == "Y":
+            print("line = "+str(currentframe().f_back.f_lineno))
+            print (instance_list_action_result)
         return instance_list_action_result
 

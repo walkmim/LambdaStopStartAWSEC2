@@ -4,6 +4,7 @@ import datetime
 import math
 import json
 from decimal import Decimal
+from inspect import currentframe, getframeinfo
 
 def assume_role_session(account,assume_role_name):
     
@@ -52,7 +53,7 @@ def get_parameters (parameter_store_name):
     # print("environments",environments)
     
     return print_only,accounts,accounts_apply_all,assume_role_name,regions,sleep_sec_next_order \
-        ,default_utc_stop_hour,default_utc_start_hour,environments,dynamodb_table,log_actions_cw_logs
+        ,default_utc_stop_hour,default_utc_start_hour,environments,dynamodb_table,log_actions_cw_logs,debug
 
 def dynamodb_put_item(dynamodb_table,instance_list):
     dynamodb = boto3.resource('dynamodb')

@@ -1,11 +1,13 @@
+from distutils.log import debug
 import boto3
 import os
 import sys
 from datetime import datetime, timedelta
 from uuid import uuid4
 from decimal import Decimal
+from inspect import currentframe, getframeinfo
 
-def get_ec2_instances(account,session,regions,environments,default_utc_stop_hour,default_utc_start_hour,print_only):
+def get_ec2_instances(account,session,regions,environments,default_utc_stop_hour,default_utc_start_hour,print_only,debug):
     instance_list = []
     try:
         
@@ -120,8 +122,10 @@ def get_ec2_instances(account,session,regions,environments,default_utc_stop_hour
                             ,"skip_until":skip_until,"utc_stop_hour":utc_stop_hour,"utc_start_hour":utc_start_hour,"auto_start":auto_start
                             ,"start_order":start_order,"stop_order":stop_order,"utc_date_time":str(date_time_now),"utc_timestamp":Decimal(utc_timestamp)};
                         instance_list.append(instance_dict)
-                        
-                # print(account," >>> ",region," >>> ",instance_id," >>> ",instance_name," >>> ",server_name)
+                
+                if debug == "Y":
+                    print("line = "+str(currentframe().f_back.f_lineno))
+                    print(account," >>> ",region," >>> ",instance_id," >>> ",instance_name," >>> ",server_name)
                 
     except Exception as e:
         exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -129,5 +133,8 @@ def get_ec2_instances(account,session,regions,environments,default_utc_stop_hour
         print(exc_type, fname, exc_tb.tb_lineno)
         print(f"---Ocorreu a seguinte exceção: {e}")
     finally:
+        if debug == "Y":
+            print("line = "+str(currentframe().f_back.f_lineno))
+            print (instance_list)
         return instance_list
 

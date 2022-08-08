@@ -16,7 +16,7 @@ aws iam attach-role-policy --policy-arn arn:aws:iam::770409265803:policy/policy_
 Parameter Store:
 aws ssm put-parameter \
     --name "AUTOMATION-STOP-START-EC2" \
-    --value 'print_only = "Y"|accounts = ["770409265803","583166431114"]|accounts_apply_all = ["770409265803"]|assume_role_name = "role_stop_start_instances"| regions = ["us-east-1","us-east-2"]|sleep_sec_next_order = 10|default_utc_stop_hour = 22|default_utc_start_hour = 12|environments = ["DEV","HML","PREPROD","SANDBOX"]|dynamodb_table = "tb_stop_start_instances"|log_actions_cw_logs = "Y"' \
+    --value 'print_only = "Y"|accounts = ["770409265803","583166431114"]|accounts_apply_all = ["770409265803"]|assume_role_name = "role_stop_start_instances"| regions = ["us-east-1","us-east-2"]|sleep_sec_next_order = 10|default_utc_stop_hour = 22|default_utc_start_hour = 12|environments = ["DEV","HML","PREPROD","SANDBOX"]|dynamodb_table = "tb_stop_start_instances"|log_actions_cw_logs = "Y"|debug="Y"' \
     --type StringList \
     --tags "Key=objective,Value=test" 
 

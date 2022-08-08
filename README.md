@@ -108,6 +108,11 @@
     * Multi valor: Não
     * Objetivo: Define se serão salvos ações da lambda em log stream do Cloud Watch Logs.
 
+* **debug**
+    * Valores aceitáveis: "Y" | "N"
+    * Multi valor: Não
+    * Objetivo: Define se será retornado no CLoud Watch logs prints específicos do código.
+
 
 ## Tags usadas nas Instâncias EC2 que são consideradas no processo de desligar/ligar EC2s:
 
